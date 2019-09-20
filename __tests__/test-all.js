@@ -50,8 +50,8 @@ describe("server", () => {
         return request(server)
           .post("/api/auth/register")
           .send({
-            username: "samwell",
-            password: "guessme"
+            username: "bryant",
+            password: "password"
           })
           .then(res => {
             expect(res.status).toBe(201);
@@ -61,10 +61,18 @@ describe("server", () => {
     describe("POST /api/auth/login", () => {
       it("returns 201 and adds user", () => {
         return request(server)
-          .post("/api/auth/login")
+          .post("/api/auth/register")
           .send({
             username: "bryant",
             password: "password"
+          })
+          .then(res => {
+            return request(server)
+              .post("/api/auth/login")
+              .send({
+                username: "bryant",
+                password: "password"
+              });
           })
           .then(res => {
             expect(res.status).toBe(201);

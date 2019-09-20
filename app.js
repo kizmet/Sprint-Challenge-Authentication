@@ -13,8 +13,9 @@ const JokesRouter = require("./jokes/jokes-router.js");
 const authenticate = require("./auth/authenticate-middleware.js");
 const { Model } = require("objection");
 
-const knex = Knex(knexConfig.development);
-const knexDb = Knex(knexConfig.development);
+//const knex = Knex(knexConfig.development);
+const knex = require("./database/dbConfig.js");
+
 Model.knex(knex); //objection
 const router = promiseRouter();
 const jokesRouter = promiseRouter();
@@ -45,6 +46,10 @@ app.use((err, req, res, next) => {
   } else {
     next();
   }
+});
+
+app.get("/", (req, res) => {
+  res.json({ message: "API is up and running!" });
 });
 
 module.exports = app;

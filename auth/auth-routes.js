@@ -6,9 +6,6 @@ const bcrypt = require("bcrypt");
 const User = require("../database/models/User");
 
 module.exports = router => {
-	router.get("/", (req, res) => {
-		res.json({ message: "API is up and running!" });
-	});
 	router.post("/register", async (req, res) => {
 		const graph = req.body;
 		const hash = await bcrypt.hash(graph.password, 10);
@@ -22,7 +19,10 @@ module.exports = router => {
 			insertedUser = await transaction(User.knex(), trx => {
 				return User.query(trx).insertGraph(hasheduser);
 			});
-			res.send({ username: insertedUser.username, id: insertedUser.id });
+			res.status(201).send({
+				username: insertedUser.username,
+				id: insertedUser.id
+			});
 		} catch (err) {
 			console.log(err instanceof objection.ValidationError);
 			console.log(err.data);
@@ -42,7 +42,7 @@ module.exports = router => {
 				);
 				if (passwordCheck) {
 					const token = await generateToken(user);
-					res.status(200).json({
+					res.status(201).json({
 						message: `Welcome ${user.username}!`,
 						token
 					});
@@ -52,6 +52,16 @@ module.exports = router => {
 			} else {
 				res.status(401).send("invalid username");
 			}
+		} catch (err) {
+			console.log(err instanceof objection.ValidationError);
+			console.log(err.data);
+		}
+	});
+
+	router.get("/users", async (req, res) => {
+		try {
+			users = await User.query();
+			res.send(users);
 		} catch (err) {
 			console.log(err instanceof objection.ValidationError);
 			console.log(err.data);
