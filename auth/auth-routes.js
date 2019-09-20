@@ -46,6 +46,7 @@ module.exports = router => {
 						message: `Welcome ${user.username}!`,
 						token
 					});
+					// res.send({ user: user, token: token });
 				} else {
 					res.status(401).json({ message: "Invalid password" });
 				}
@@ -60,7 +61,7 @@ module.exports = router => {
 
 	router.get("/users", async (req, res) => {
 		try {
-			users = await User.query();
+			const users = await User.query();
 			res.send(users);
 		} catch (err) {
 			console.log(err instanceof objection.ValidationError);

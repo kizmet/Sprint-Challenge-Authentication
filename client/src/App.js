@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout, Form, Menu, Dropdown, Icon } from "antd";
 import { Route, Switch, Link, Redirect } from "react-router-dom";
-import "./App.css";
+import "./App.less";
 import NormalLoginForm from "./NormalLoginForm";
 import RegistrationForm from "./RegistrationForm";
 import Jokes from "./Jokes";
@@ -56,15 +56,17 @@ const App = ({ history }) => {
 					</a>
 				</Dropdown>
 			</Header>
-			<Switch>
-				<Route exact path="/" component={WrappedNormalLoginForm} />
-				<Route
-					exact
-					path="/register"
-					component={WrappedRegistrationForm}
-				/>
-				<Route exact path="/jokes" component={Jokes} />
-			</Switch>
+			<Content>
+				<Switch>
+					<Route exact path="/" component={WrappedNormalLoginForm} />
+					<Route
+						exact
+						path="/register"
+						component={WrappedRegistrationForm}
+					/>
+					<Route exact path="/jokes" component={Jokes} />
+				</Switch>
+			</Content>
 		</Layout>
 	);
 };

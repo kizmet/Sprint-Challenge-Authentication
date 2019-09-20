@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "./App.css";
+// import "./App.css";
 
 const req = axios.create({
   baseURL: "http://localhost:3300/"
@@ -20,7 +20,7 @@ class NormalLoginForm extends React.Component {
   };
 
   axiosPost = async values => {
-    const post = await req.post("api/login", {
+    const post = await req.post("api/auth/login", {
       username: values.username,
       password: values.password
     });
@@ -29,6 +29,7 @@ class NormalLoginForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Form.Item>

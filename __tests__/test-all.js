@@ -1,11 +1,11 @@
 const request = require("supertest");
-
 const db = require("../database/dbConfig.js");
 const server = require("../app.js");
+const { transaction } = require("objection");
+const User = require("../database/models/User");
 
 describe("server", () => {
   beforeEach(async () => {
-    // guarantees that the table is cleaned out before any of the tests run
     await db("users").truncate();
   });
 
@@ -46,16 +46,23 @@ describe("server", () => {
       });
     });
     describe("POST /api/auth/register", () => {
-      it("returns 201 and adds user", () => {
-        return request(server)
-          .post("/api/auth/register")
-          .send({
-            username: "bryant",
+      it("inserts user and returns 201", async () => {
+        let user = await transaction(User.knex(), trx => {
+          return User.query(trx).insertGraph({
+            username: "botman",
             password: "password"
-          })
-          .then(res => {
-            expect(res.status).toBe(201);
           });
+        });
+        expect(user.username).toBe("botman");
+        user = await transaction(User.knex(), trx => {
+          return User.query(trx).insertGraph({
+            username: "botlady",
+            password: "password"
+          });
+        });
+        expect(user.username).toBe("botlady");
+        const users = await User.query();
+        expect(users).toHaveLength(2);
       });
     });
     describe("POST /api/auth/login", () => {

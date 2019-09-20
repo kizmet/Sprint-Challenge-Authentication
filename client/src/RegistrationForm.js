@@ -24,7 +24,7 @@ class RegistrationForm extends React.Component {
   };
 
   axiosPost = async values => {
-    await req.post("api/register", {
+    await req.post("api/auth/register", {
       username: values.username,
       password: values.password
     });
@@ -59,11 +59,11 @@ class RegistrationForm extends React.Component {
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 8 }
+        sm: { span: 5, offset: 5 }
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 16 }
+        sm: { span: 5 }
       }
     };
     const tailFormItemLayout = {
@@ -74,18 +74,10 @@ class RegistrationForm extends React.Component {
         },
         sm: {
           span: 16,
-          offset: 8
+          offset: 11
         }
       }
     };
-    const prefixSelector = getFieldDecorator("prefix", {
-      initialValue: "86"
-    })(
-      <Select style={{ width: 70 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>
-    );
 
     return (
       <Form {...formItemLayout} onSubmit={this.handleSubmit}>
